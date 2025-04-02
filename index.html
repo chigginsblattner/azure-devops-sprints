@@ -1,0 +1,29 @@
+<html>
+<body>
+    <h2>2025 Sprint Schedule</h2>
+    <div id="sprint-list">Loading...</div>
+
+    <script>
+        async function fetchSprints() {
+            const url = "https://dev.azure.com/{BlattnerCompany}/{Blattner%20Projects}/{HR Technology Team}/_apis/work/teamsettings/iterations?api-version=7.1-preview.1";
+            const response = await fetch(url, {
+                headers: {
+                    "Authorization": "Basic " + btoa(":{EjBtjUIUGBzxHQR2EoTX30NHaMAreSUq8LPO7vFbk5pw264PUaY9JQQJ99BDACAAAAAvH9p2AAASAZDO1VTP}")
+                }
+            });
+            const data = await response.json();
+
+            let sprintList = "<ul>";
+            data.value.forEach(sprint => {
+                const year = new Date(sprint.attributes.startDate).getFullYear();
+                if (year === 2025) {
+                    sprintList += `<li><b>${sprint.name}:</b> ${sprint.attributes.startDate} - ${sprint.attributes.finishDate}</li>`;
+                }
+            });
+            sprintList += "</ul>";
+            document.getElementById("sprint-list").innerHTML = sprintList;
+        }
+        fetchSprints();
+    </script>
+</body>
+</html>
